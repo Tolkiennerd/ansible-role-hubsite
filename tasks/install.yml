@@ -24,6 +24,7 @@
     group: "{{ hubsite_gid }}"
   with_items:
     - {path: "{{ hubsite_html_path }}", when: true}
+    - {path: "{{ hubsite_html_path }}/matthew", when: true}
     - {path: "{{ hubsite_assets_path }}", when: true}
 
 - name: Ensure hubsite traefik labels are installed
@@ -46,7 +47,7 @@
 - name: Ensure matthew html is installed
   ansible.builtin.template:
     src: "{{ role_path }}/templates/html/matthew.html.j2"
-    dest: "{{ hubsite_html_path }}/matthew.html"
+    dest: "{{ hubsite_html_path }}/matthew/index.html"
     owner: "{{ hubsite_uid }}"
     group: "{{ hubsite_gid }}"
     mode: "0644"
@@ -68,6 +69,15 @@
     mode: "0644"
   when: item.logo_location | length > 0
   loop: "{{ hubsite_service_list }}"
+
+- name: Ensure custom images are installed
+  ansible.builtin.copy:
+    src: "{{ role_path }}/assets/pippin-smoking.gif"
+    dest: "{{ hubsite_assets_path }}/pippin-smoking.gif"
+    owner: "{{ hubsite_uid }}"
+    group: "{{ hubsite_gid }}"
+    mode: "0644"
+  when: true
 
 - name: Ensure nginx container image is pulled
   community.docker.docker_image:
