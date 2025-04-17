@@ -43,6 +43,14 @@
     group: "{{ hubsite_gid }}"
     mode: "0644"
 
+- name: Ensure matthew html is installed
+  ansible.builtin.template:
+    src: "{{ role_path }}/templates/html/matthew.html.j2"
+    dest: "{{ hubsite_html_path }}/matthew.html"
+    owner: "{{ hubsite_uid }}"
+    group: "{{ hubsite_gid }}"
+    mode: "0644"
+
 - name: Ensure hubsite css is installed
   ansible.builtin.template:
     src: "{{ role_path }}/templates/html/styles.css.j2"
